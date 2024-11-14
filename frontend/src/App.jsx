@@ -21,7 +21,7 @@ function App() {
       },
       b介: {
         "2024-12-01": "true",
-        "2024-12-02": "true",
+        "2024-12-02": "false",
         "2024-12-03": "true",
       },
       c子: {
@@ -40,7 +40,6 @@ function App() {
     if (date === "") return;
 
     console.log(userName, date, eatStatus);
-    console.log(userNameArray, dateArray, eatStatusObj);
   }
 
   return (
@@ -80,12 +79,12 @@ function App() {
           </tr>
         </thead>
         <tbody>
-          {userNameArray.map((value) => (
-            <tr key={value}>
-              <th>{value}</th>
-              <td>{eatStatusObj[value]["2024-12-01"]} </td>
-              <td>{eatStatusObj[value]["2024-12-02"]} </td>
-              <td>{eatStatusObj[value]["2024-12-03"]}</td>
+          {userNameArray.map((nameValue) => (
+            <tr key={nameValue}>
+              <th>{nameValue}</th>
+              {dateArray.map((dateValue) => (
+                <td key={dateValue}>{eatStatusObj[nameValue][dateValue]} </td>
+              ))}
             </tr>
           ))}
         </tbody>
