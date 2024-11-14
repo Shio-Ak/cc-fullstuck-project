@@ -8,16 +8,28 @@ function App() {
 
   const [userNameArray, setUserNameArray] = useState([]);
   const [dateArray, setDateArray] = useState([]);
-  const [eatStatusArray, setEatStatusArray] = useState([]);
+  const [eatStatusObj, setEatStatusObj] = useState({});
 
   useEffect(() => {
     setUserNameArray(["a太", "b介", "c子"]);
-    setDateArray(["2024/12/1", "2024/12/2", "2024/12/3"]);
-    setEatStatusArray([
-      ["false", "true", "true"],
-      ["true", "false", "true"],
-      ["true", "true", "false"],
-    ]);
+    setDateArray(["2024-12-01", "2024-12-02", "2024-12-03"]);
+    setEatStatusObj({
+      a太: {
+        "2024-12-01": "false",
+        "2024-12-02": "true",
+        "2024-12-03": "true",
+      },
+      b介: {
+        "2024-12-01": "true",
+        "2024-12-02": "true",
+        "2024-12-03": "true",
+      },
+      c子: {
+        "2024-12-01": "true",
+        "2024-12-02": "true",
+        "2024-12-03": "false",
+      },
+    });
   }, []);
 
   function handleSubmit(e) {
@@ -28,7 +40,7 @@ function App() {
     if (date === "") return;
 
     console.log(userName, date, eatStatus);
-    console.log(userNameArray, dateArray, eatStatusArray);
+    console.log(userNameArray, dateArray, eatStatusObj);
   }
 
   return (
@@ -71,9 +83,9 @@ function App() {
           {userNameArray.map((value) => (
             <tr key={value}>
               <th>{value}</th>
-              <td>abc </td>
-              <td>abc </td>
-              <td>abc </td>
+              <td>{eatStatusObj[value]["2024-12-01"]} </td>
+              <td>{eatStatusObj[value]["2024-12-02"]} </td>
+              <td>{eatStatusObj[value]["2024-12-03"]}</td>
             </tr>
           ))}
         </tbody>
