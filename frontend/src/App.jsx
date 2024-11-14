@@ -1,35 +1,85 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [userName, setUserName] = useState("");
+  const [date, setDate] = useState("");
+  const [eatStatus, setEatStatus] = useState("");
+
+  const [userNameArray, setUserNameArray] = useState([]);
+  const [dateArray, setDateArray] = useState([]);
+  const [eatStatusArray, setEatStatusArray] = useState([]);
+
+  useEffect(() => {
+    setUserNameArray(["a太", "b介", "c子"]);
+    setDateArray(["2024/12/1", "2024/12/2", "2024/12/3"]);
+    setEatStatusArray([
+      ["false", "true", "true"],
+      ["true", "false", "true"],
+      ["true", "true", "false"],
+    ]);
+  }, []);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    if (userName === "") return;
+
+    if (date === "") return;
+
+    console.log(userName, date, eatStatus);
+    console.log(userNameArray, dateArray, eatStatusArray);
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+      <h1>ごはん管理台帳</h1>
+      <form onSubmit={(e) => handleSubmit(e)}>
+        <label htmlFor="userName">名前：</label>
+        <input
+          type="text"
+          id="userName"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
+        />
+        <label htmlFor="date">日付：</label>
+        <input
+          type="date"
+          id="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+        />
+        <br />
+        <button type="submit" onClick={() => setEatStatus("true")}>
+          食べる
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+        <button type="submit" onClick={() => setEatStatus("false")}>
+          食べない
+        </button>
+      </form>
+      <h2>ステータス一覧</h2>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            {dateArray.map((value) => (
+              <th key={value}>{value}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {userNameArray.map((value) => (
+            <tr key={value}>
+              <th>{value}</th>
+              <td>abc </td>
+              <td>abc </td>
+              <td>abc </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
