@@ -1,35 +1,32 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import axios from "axios";
 
 function App() {
   const [userName, setUserName] = useState("");
   const [date, setDate] = useState("");
   const [eatStatus, setEatStatus] = useState("");
 
-  const [userNameArray, setUserNameArray] = useState([]);
-  const [dateArray, setDateArray] = useState([]);
+  const [userNameArray, setUserNameArray] = useState(["a太", "b介", "c子"]);
+  const [dateArray, setDateArray] = useState([
+    "2024-12-01",
+    "2024-12-02",
+    "2024-12-03",
+  ]);
   const [eatStatusObj, setEatStatusObj] = useState({});
+  const [flag, setFlag] = useState(0);
 
   useEffect(() => {
-    setUserNameArray(["a太", "b介", "c子"]);
-    setDateArray(["2024-12-01", "2024-12-02", "2024-12-03"]);
-    setEatStatusObj({
-      a太: {
-        "2024-12-01": "false",
-        "2024-12-02": "true",
-        "2024-12-03": "true",
-      },
-      b介: {
-        "2024-12-01": "true",
-        "2024-12-02": "false",
-        "2024-12-03": "true",
-      },
-      c子: {
-        "2024-12-01": "true",
-        "2024-12-02": "true",
-        "2024-12-03": "false",
-      },
-    });
+    try {
+      const fetchTodos = async () => {
+        const res = await axios.get("/api/statuses");
+        setEatStatusObj(res.data);
+        setFlag(1);
+      };
+      fetchTodos();
+    } catch (err) {
+      console.log(err);
+    }
   }, []);
 
   function handleSubmit(e) {
@@ -69,26 +66,30 @@ function App() {
         </button>
       </form>
       <h2>ステータス一覧</h2>
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            {dateArray.map((value) => (
-              <th key={value}>{value}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {userNameArray.map((nameValue) => (
-            <tr key={nameValue}>
-              <th>{nameValue}</th>
-              {dateArray.map((dateValue) => (
-                <td key={dateValue}>{eatStatusObj[nameValue][dateValue]} </td>
+      {flag === 1 ? (
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              {dateArray.map((value) => (
+                <th key={value}>{value}</th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {userNameArray.map((nameValue) => (
+              <tr key={nameValue}>
+                <th>{nameValue}</th>
+                {dateArray.map((dateValue) => (
+                  <td key={dateValue}>{eatStatusObj[nameValue][dateValue]} </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <div>No Data</div>
+      )}
     </>
   );
 }
