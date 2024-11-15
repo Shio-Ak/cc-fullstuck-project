@@ -4,8 +4,10 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha tests/*.test.js",
+    "rollback": "knex migrate:rollback --all",
     "migrate": "knex migrate:latest",
     "seed": "knex seed:run",
+    "restore": "knex migrate:rollback --all && knex migrate:latest && knex seed:run",
     "start": "node index.js",
     "dev": "nodemon index.js"
   },

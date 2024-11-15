@@ -31,11 +31,18 @@ describe("eatStatuses API", () => {
     it("参照に成功したら200のステータスコードを返す。", async () => {
       // Setup
       const mockEatStatuses = [
-        { id: 1, userName: "", date: "", eatStatus: "" },
-        { id: 2, userName: "", date: "", eatStatus: "" },
+        { id: 1, userName: "a太", date: "2024-12-01", eatStatus: true },
+        { id: 2, userName: "a太", date: "2024-12-02", eatStatus: true },
+        { id: 3, userName: "a太", date: "2024-12-03", eatStatus: true },
+        { id: 4, userName: "b介", date: "2024-12-01", eatStatus: true },
+        { id: 5, userName: "b介", date: "2024-12-02", eatStatus: true },
+        { id: 6, userName: "b介", date: "2024-12-03", eatStatus: true },
+        { id: 7, userName: "c子", date: "2024-12-01", eatStatus: true },
+        { id: 8, userName: "c子", date: "2024-12-02", eatStatus: true },
+        { id: 9, userName: "c子", date: "2024-12-03", eatStatus: true },
       ];
 
-      sandbox.stub(eatStatusesModel, "findAll").resolves(mockEatStatuses);
+      // sandbox.stub(eatStatusesModel, "findAll").resolves(mockEatStatuses);
 
       // Execute
       const res = await request.get("/api/statuses");
