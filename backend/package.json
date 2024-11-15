@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests/**/*.test.js --watch --reporter dot",
+    "test": "mocha tests/*.test.js",
     "migrate": "knex migrate:latest",
     "seed": "knex seed:run",
     "start": "node index.js",
@@ -20,8 +20,8 @@
     "pg": "^8.13.1"
   },
   "devDependencies": {
-    "chai": "^5.1.2",
-    "chai-http": "^5.1.1",
+    "chai": "^4.5.0",
+    "chai-http": "^4.4.0",
     "mocha": "^10.8.2",
     "sinon": "^19.0.2"
   }
