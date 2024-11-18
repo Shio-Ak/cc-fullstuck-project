@@ -11,4 +11,10 @@ module.exports = {
       )
       .from("eatStatuses");
   },
+
+  async patchStatuses(userName, date, eatStatus) {
+    await knex("eatStatuses")
+      .where({ userName: userName, date: date })
+      .update({ eatStatus: eatStatus });
+  },
 };

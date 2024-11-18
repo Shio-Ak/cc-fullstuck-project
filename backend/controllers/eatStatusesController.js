@@ -7,11 +7,31 @@ exports.findAll = async (req, res) => {
       if (!acc[userName]) {
         acc[userName] = {};
       }
-      acc[userName][date] = eatStatus.toString();
+
+      if (eatStatus === true) {
+        eatStatus = "⚪︎";
+      } else {
+        eatStatus = " ";
+      }
+
+      acc[userName][date] = eatStatus;
       return acc;
     }, {});
     res.status(200).json(result);
   } catch (err) {
     res.status(500).json({ error: "Failed to get eatStatuses" });
+  }
+};
+
+exports.patchStatuses = async (req, res) => {
+  const userName = req.query.userName;
+  const date = req.query.date;
+  const eatStatus = req.query.eatStatus;
+
+  try {
+    await eatStatusesModel.patchStatuses(userName, date, eatStatus);
+    res.status(200).end();
+  } catch (err) {
+    res.status(500).json({ error: "Failed to patch eatStatuses" });
   }
 };
