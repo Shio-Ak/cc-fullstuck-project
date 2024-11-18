@@ -1,36 +1,34 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import axios from "axios";
+import Table from "./Table";
 
 function App() {
   const [userName, setUserName] = useState("");
   const [date, setDate] = useState("");
   const [eatStatus, setEatStatus] = useState("");
 
-  const [userNameArray, setUserNameArray] = useState([]);
-  const [dateArray, setDateArray] = useState([]);
   const [eatStatusObj, setEatStatusObj] = useState({});
+  const [flag, setFlag] = useState(0);
 
-  useEffect(() => {
-    setUserNameArray(["a太", "b介", "c子"]);
-    setDateArray(["2024-12-01", "2024-12-02", "2024-12-03"]);
-    setEatStatusObj({
-      a太: {
-        "2024-12-01": "false",
-        "2024-12-02": "true",
-        "2024-12-03": "true",
-      },
-      b介: {
-        "2024-12-01": "true",
-        "2024-12-02": "false",
-        "2024-12-03": "true",
-      },
-      c子: {
-        "2024-12-01": "true",
-        "2024-12-02": "true",
-        "2024-12-03": "false",
-      },
-    });
-  }, []);
+  async function fetchStatuses() {
+    const res = await axios.get("/api/statuses");
+    setEatStatusObj(res.data);
+    setFlag(1);
+  }
+
+  async function patchStatuses(userName, date, eatStatus) {
+    try {
+      await axios.patch(
+        `/api/statuses?userName=${encodeURIComponent(
+          userName
+        )}&date=${date}&eatStatus=${eatStatus}`
+      );
+      fetchStatuses();
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -39,8 +37,16 @@ function App() {
 
     if (date === "") return;
 
-    console.log(userName, date, eatStatus);
+    patchStatuses(userName, date, eatStatus);
   }
+
+  useEffect(() => {
+    try {
+      fetchStatuses();
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
 
   return (
     <>
@@ -57,6 +63,8 @@ function App() {
         <input
           type="date"
           id="date"
+          min="2024-12-01"
+          max="2024-12-10"
           value={date}
           onChange={(e) => setDate(e.target.value)}
         />
@@ -69,26 +77,7 @@ function App() {
         </button>
       </form>
       <h2>ステータス一覧</h2>
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            {dateArray.map((value) => (
-              <th key={value}>{value}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {userNameArray.map((nameValue) => (
-            <tr key={nameValue}>
-              <th>{nameValue}</th>
-              {dateArray.map((dateValue) => (
-                <td key={dateValue}>{eatStatusObj[nameValue][dateValue]} </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {flag === 1 ? <Table eatStatusObj={eatStatusObj} /> : <div>No Data</div>}
     </>
   );
 }
