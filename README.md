@@ -1,6 +1,56 @@
 # cc-fullstuck-project
 
-## デザイン
+## セットアップ手順
+
+```
+# リポジトリをクローン
+git clone https://github.com/Shio-Ak/cc-fullstuck-project.git
+
+# バックエンドディレクトリに移動し、必要モジュールをインストール
+cd ./backend
+npm i
+
+# .env.localファイルを作成し、以下を追記
+vi .env.local
+
+DB_USER=<DB_NAME>
+DB_PASSWORD=<DB_PASSWORD>
+DB_NAME=dormitory_food_management_db
+PORT=3000
+
+# DB作成
+<postgresql環境へログイン>
+CREATE DATABASE dormitory_food_management_db;
+<ログアウト>
+
+# DBのマイグレーションを実施
+npm run migrate
+npm run seed
+
+# expressサーバを起動
+npm run dev
+
+# フロントエンドディレクトリに移動し、必要モジュールをインストール
+cd ../frontend
+npm i
+
+# viteを起動
+npm run dev
+
+# ブラウザで以下のアドレスを入力しweb画面へ接続
+http://http://localhost:5173/
+
+```
+
+## 動作保証環境
+
+```
+node v20.16.0
+npm v10.8.1
+postgresql v17
+```
+
+## 概要
 
 ### 背景
 
@@ -24,3 +74,11 @@
 ### フロント画面概要
 
 ![front_overview](images/front_overview.drawio.png)
+
+## 将来の計画
+
+- スタイルシートを適用
+- ユーザ登録フォームの整備
+- 選択可能なカレンダーの日付を増強
+- 朝食・夕食それぞれで食べる/食べないの選択が可能なように処理を改修
+- 管理者向けに食べた日数に応じて課金額が自動計算されるように処理を改修
